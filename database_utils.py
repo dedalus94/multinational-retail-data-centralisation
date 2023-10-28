@@ -7,7 +7,8 @@ class DatabaseConnector:
         with open('db_creds.yaml','r') as credentials: 
 
             cred_dict=yaml.safe_load(credentials)
-            print(cred_dict)
+            
+            return cred_dict
+            
 
 
-DatabaseConnector.read_db_creds()
