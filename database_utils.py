@@ -1,5 +1,6 @@
 import yaml
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine,inspect
+
 
 class DatabaseConnector:
 
@@ -18,6 +19,8 @@ class DatabaseConnector:
     
     def init_db_engine(self):
 
+        """ This method creates and returns an SQL alchemy engine created using the credentials read from the other method"""
+
         DATABASE_TYPE = 'postgresql'
         DBAPI = 'psycopg2'
         ENDPOINT = self.read_db_creds()['RDS_HOST'] 
@@ -31,8 +34,15 @@ class DatabaseConnector:
         engine = engine.connect()
 
         return engine
+    
+    def list_db_tables(self):
+
+        insp = inspect(self.init_db_engine())
+        print (insp.get_table_names())
+
+ABC= DatabaseConnector()
+ABC.list_db_tables()
 
 
-            
-ABC=DatabaseConnector()
-print(ABC.init_db_engine())
+
+
