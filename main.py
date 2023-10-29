@@ -7,7 +7,7 @@ from data_cleaning import *
 
 
 if __name__ == "__main__":
-    
+
     db= DatabaseConnector()
     db_extractor= DataExtractor()
     db_cleaner=DataCleaning()
@@ -16,5 +16,5 @@ if __name__ == "__main__":
     print(users_df.shape[0])
     users_df=db_cleaner.clean_user_data(users_df)
     print(users_df.shape[0])
-
+    db.upload_to_db('dim_users',users_df)
 

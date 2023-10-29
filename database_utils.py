@@ -1,6 +1,6 @@
 import yaml
 from sqlalchemy import create_engine,inspect
-
+import pandas as pd 
 
 class DatabaseConnector:
 
@@ -39,6 +39,17 @@ class DatabaseConnector:
 
         insp = inspect(self.init_db_engine())
         print (insp.get_table_names())
+
+    def upload_to_db(self, table_name,df):
+
+        engine=self.init_db_engine()
+        df.to_sql(name=table_name,
+                  con=engine,
+                  if_exists='replace',
+                  )
+
+
+
 
 
 

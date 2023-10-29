@@ -28,6 +28,7 @@ class DataCleaning:
 
             return pd.concat([slash_dates,wordly_dates,regular_dates])
 
+        users_df.set_index('index',inplace=True)
 
         #attempting to drop pandas-recognised NaNs values
         users_df.dropna(inplace=True)
