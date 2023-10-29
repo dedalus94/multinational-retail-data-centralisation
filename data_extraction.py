@@ -9,6 +9,16 @@ class DataExtractor():
 
     def read_rds_table(self,connector,table_name):
 
+        """
+        reads a table 
+
+        --- parameters --- 
+        - instance of connector 
+        - table name 
+        
+        
+        """
+
         df = pd.read_sql_table(table_name, connector.init_db_engine())
 
         return df
