@@ -1,6 +1,6 @@
 import yaml
 from sqlalchemy import create_engine,inspect
-import pandas as pd
+
 
 class DatabaseConnector:
 
@@ -40,16 +40,9 @@ class DatabaseConnector:
         insp = inspect(self.init_db_engine())
         print (insp.get_table_names())
 
-    def read_rds_table(self):
-
-        df = pd.read_sql_table('legacy_users', self.init_db_engine())
-
-        return df
 
 
         
-
-
 
 
 
