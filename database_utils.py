@@ -1,5 +1,7 @@
 import yaml
 from sqlalchemy import create_engine,inspect
+from sqlalchemy import text
+
 import pandas as pd 
 
 class DatabaseConnector:
@@ -42,11 +44,27 @@ class DatabaseConnector:
 
     def upload_to_db(self, table_name,df):
 
-        engine=self.init_db_engine()
-        df.to_sql(name=table_name,
-                  con=engine,
-                  if_exists='replace',
-                  )
+        """This function connects to the locally initialised DB and uploads data in a table."""
+
+        with open('local_cred.yaml','r') as local_credentials:
+
+            local_cred_dict=yaml.safe_load(local_credentials)
+
+            DATABASE_TYPE = 'postgresql'
+            DBAPI = 'psycopg2'
+            ENDPOINT = local_cred_dict['HOST'] 
+            USER = local_cred_dict['USER'] 
+            PASSWORD = local_cred_dict['PASSWORD'] 
+            PORT = local_cred_dict['PORT'] 
+            DATABASE = local_cred_dict['DATABASE'] 
+
+            engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{ENDPOINT}:{PORT}/{DATABASE}")
+            engine = engine.connect()
+            
+            df.to_sql(name=table_name,
+                    con=engine,
+                    if_exists='replace',
+                    )
 
 
 
