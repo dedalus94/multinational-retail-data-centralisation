@@ -4,10 +4,8 @@ class DataCleaning:
 
     def __init__(self) -> None:
         pass
-    
-    def clean_user_data(self,users_df):
 
-        def format_date(df,date_col):
+    def format_date(self,df,date_col):
         
             """This function can format different date formats. I identified 3 different possible formats
             The two date columns can contain different formats in each row. 
@@ -27,6 +25,10 @@ class DataCleaning:
             print(f"formatted {regular_dates.shape[0]} row with datetime format type '2005-01-10', in column {date_col} ")
 
             return pd.concat([slash_dates,wordly_dates,regular_dates])
+    
+    def clean_user_data(self,users_df):
+
+        """This function performs a number of checks on the user data and removes errors and NULL values"""
 
         users_df.set_index('index',inplace=True)
 
@@ -46,8 +48,23 @@ class DataCleaning:
         users_df=users_df[~users_df['country'].str.contains('\d',regex=True)] #checks that country names have no number
         users_df['country_code']=users_df['country_code']=users_df.country_code.str.replace('GGB','GB') #make UK code consistent 
 
-        users_df=format_date(users_df,'date_of_birth')
-        users_df=format_date(users_df,'join_date')
+        users_df=self.format_date(users_df,'date_of_birth')
+        users_df=self.format_date(users_df,'join_date')
 
         return users_df
+
+
+    def clean_card_data(self, cards_df):
+
+        """This function performs a number of checks on the cards data and removes errors and NULL values"""
+        
+        
+        cards_df.dropna(inplace=True)
+        cards_df=cards_df.apply(lambda x : x[~x.astype('str').str.contains('NULL')]).dropna()
+        cards_df=self.format_date(cards_df,'date_payment_confirmed')
+        cards_df=cards_df[~cards_df['card_number'].str.contains('[a-zA-Z]',regex=True)]
+
+        return cards_df
+         
+
 

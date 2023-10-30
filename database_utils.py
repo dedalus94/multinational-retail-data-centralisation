@@ -1,8 +1,8 @@
 import yaml
 from sqlalchemy import create_engine,inspect
 from sqlalchemy import text
-
 import pandas as pd 
+import tabula
 
 class DatabaseConnector:
 
@@ -42,11 +42,11 @@ class DatabaseConnector:
         insp = inspect(self.init_db_engine())
         print (insp.get_table_names())
 
-    def upload_to_db(self, table_name,df):
+    def upload_to_db(self, credential_file, table_name,df):
 
         """This function connects to the locally initialised DB and uploads data in a table."""
 
-        with open('local_cred.yaml','r') as local_credentials:
+        with open(credential_file,'r') as local_credentials:
 
             local_cred_dict=yaml.safe_load(local_credentials)
 
