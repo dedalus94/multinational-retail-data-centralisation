@@ -45,4 +45,5 @@ if __name__ == "__main__":
 
     db.upload_to_db('local_cred.yaml','dim_products',s3_file)
 
-    print(s3_file)
+    
+    
