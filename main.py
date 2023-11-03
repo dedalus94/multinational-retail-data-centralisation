@@ -41,3 +41,8 @@ if __name__ == "__main__":
 
     s3_file=db_extractor.extract_from_s3('s3://data-handling-public/products.csv','s3_products.csv')
     s3_file=db_cleaner.convert_product_weights(s3_file)
+    s3_file=db_cleaner.clean_products_data(s3_file)
+
+    db.upload_to_db('local_cred.yaml','dim_products',s3_file)
+
+    print(s3_file)

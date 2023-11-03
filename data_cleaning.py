@@ -113,7 +113,7 @@ class DataCleaning:
     def clean_products_data(self,products_df):
          
         products_df.dropna(inplace=True)
-        products_df=self.format_date(products_df,'join_date')
+        products_df=self.format_date(products_df,'date_added')
         products_df=products_df[~products_df['removed'].str.contains('\d')]
         products_df=products_df[products_df['EAN'].str.contains('\d')]
         products_df=products_df[products_df['product_price'].str.contains('£\d+[.]*\d*')]
