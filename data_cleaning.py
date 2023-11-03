@@ -1,4 +1,5 @@
 import pandas as pd 
+import re
 
 class DataCleaning:
 
@@ -65,6 +66,62 @@ class DataCleaning:
         cards_df=cards_df[~cards_df['card_number'].str.contains('[a-zA-Z]',regex=True)]
 
         return cards_df
+    
+    def called_clean_store_data(self, store_df):
+
+        """This function performs a number of checks on the cards data and removes errors and NULL values"""
+        
+
+        store_df=store_df[~store_df['staff_numbers'].str.contains('[a-zA-Z]',regex=True)]
+        store_df=store_df[~store_df['country_code'].str.contains('\d',regex=True)]
+        store_df=store_df[~store_df['continent'].str.contains('\d',regex=True)]
+        store_df['continent']=store_df['continent']=store_df.continent.str.replace('ee','')
+        
+        return store_df
+
+    def convert_product_weights(self,products_df):
+
+        # some products are sold in bulk and the weight is expressed as:
+        # item_weight*number_of_items
+
+        products_df['weight']=products_df['weight'].str.replace('(\d*)\s*x\s*(\d*).*([a-zA-Z]).*',
+                                  lambda x: str(float(x[1])*float(x[2]))+str(x[3]),
+                                  regex=True,)
+         
+        #conversion for kg, g, oz and ml to kg
+
+        unit_conversion_dict={'^(\d+[.]*\d*)\s*kg$':1,
+                            '^(\d+[.]*\d*)\s*g$':0.001,
+                            '^(\d+[.]*\d*)\s*ml$':0.001,
+                            '^(\d+[.]*\d*)\s*oz$':0.0283}
+
+        for unit in unit_conversion_dict:
+
+            extraction=products_df['weight'].str.extract(unit,expand=False, flags=re.IGNORECASE).dropna()
+            idx=extraction.index
+            products_df.loc[idx,'weight (kg)']=extraction.astype('float')*unit_conversion_dict[unit]
+            
+            #selects only the columns I need in the right order:
+            roducts_df=products_df[['product_name', 'product_price',
+                                     'weight (kg)', 'category',
+                                     'EAN', 'date_added', 'uuid',
+                                     'removed', 'product_code', ]]
+
+
+        return products_df
+    
+    def clean_products_data(self,products_df):
+         
+        products_df.dropna(inplace=True)
+        products_df=self.format_date(products_df,'join_date')
+        products_df=products_df[~products_df['removed'].str.contains('\d')]
+        products_df=products_df[products_df['EAN'].str.contains('\d')]
+        products_df=products_df[products_df['product_price'].str.contains('£\d+[.]*\d*')]
+
+        return products_df
+
+         
+
          
 
 

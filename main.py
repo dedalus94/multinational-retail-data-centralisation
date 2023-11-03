@@ -26,9 +26,18 @@ if __name__ == "__main__":
 
     #db.upload_to_db('local_cred.yaml','dim_users',users_df) #stores users data locally 
     
-    link= 'https://data-handling-public.s3.eu-west-1.amazonaws.com/card_details.pdf' #Document stored in S3
-    pdf_df=db_extractor.retrieve_pdf_data(link) #extracts card data from pdf 
+    #link= 'https://data-handling-public.s3.eu-west-1.amazonaws.com/card_details.pdf' #Document stored in S3
+    #pdf_df=db_extractor.retrieve_pdf_data(link) #extracts card data from pdf 
 
-    pdf_df=db_cleaner.clean_card_data(pdf_df)
+    #pdf_df=db_cleaner.clean_card_data(pdf_df)
 
-    db.upload_to_db('local_cred.yaml','dim_card_details',pdf_df)
+    #db.upload_to_db('local_cred.yaml','dim_card_details',pdf_df)
+
+    #get stores data from API 
+    #number_of_stores=db_extractor.list_number_of_stores()
+    #store_df=db_extractor.retrieve_stores_data()
+    #store_df=db_cleaner.called_clean_store_data(store_df)
+    #db.upload_to_db('local_cred.yaml','dim_store_details',store_df)
+
+    s3_file=db_extractor.extract_from_s3('s3://data-handling-public/products.csv','s3_products.csv')
+    s3_file=db_cleaner.convert_product_weights(s3_file)
