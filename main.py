@@ -39,11 +39,19 @@ if __name__ == "__main__":
     #store_df=db_cleaner.called_clean_store_data(store_df)
     #db.upload_to_db('local_cred.yaml','dim_store_details',store_df)
 
-    s3_file=db_extractor.extract_from_s3('s3://data-handling-public/products.csv','s3_products.csv')
-    s3_file=db_cleaner.convert_product_weights(s3_file)
-    s3_file=db_cleaner.clean_products_data(s3_file)
+    #s3_file=db_extractor.extract_from_s3('s3://data-handling-public/products.csv','s3_products.csv')
+    #s3_file=db_cleaner.convert_product_weights(s3_file)
+    #s3_file=db_cleaner.clean_products_data(s3_file)
+    #print(s3_file)
+    #db.upload_to_db('local_cred.yaml','dim_products',s3_file)
 
-    db.upload_to_db('local_cred.yaml','dim_products',s3_file)
+    db.list_db_tables()
 
-    
+    #orders_df=db_extractor.read_rds_table(db,'orders_table')
+    #orders_df=db_cleaner.clean_orders_data(orders_df)
+    #db.upload_to_db('local_cred.yaml','orders_table',orders_df)
+
+    sales_df=db_extractor.extract_json('https://data-handling-public.s3.eu-west-1.amazonaws.com/date_details.json')
+    sales_df=db_cleaner.clean_sales_data(sales_df)
+    print(sales_df)
     

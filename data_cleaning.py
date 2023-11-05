@@ -90,23 +90,16 @@ class DataCleaning:
          
         #conversion for kg, g, oz and ml to kg
 
-        unit_conversion_dict={'^(\d+[.]*\d*)\s*kg$':1,
-                            '^(\d+[.]*\d*)\s*g$':0.001,
-                            '^(\d+[.]*\d*)\s*ml$':0.001,
-                            '^(\d+[.]*\d*)\s*oz$':0.0283}
+        unit_conversion_dict={'^(\d+[.]*\d*)\s*kg$' : 1,
+                              '^(\d+[.]*\d*)\s*g$' : 0.001,
+                              '^(\d+[.]*\d*)\s*ml$' : 0.001,
+                              '^(\d+[.]*\d*)\s*oz$' : 0.0283}
 
         for unit in unit_conversion_dict:
 
             extraction=products_df['weight'].str.extract(unit,expand=False, flags=re.IGNORECASE).dropna()
             idx=extraction.index
             products_df.loc[idx,'weight (kg)']=extraction.astype('float')*unit_conversion_dict[unit]
-            
-            #selects only the columns I need in the right order:
-            roducts_df=products_df[['product_name', 'product_price',
-                                     'weight (kg)', 'category',
-                                     'EAN', 'date_added', 'uuid',
-                                     'removed', 'product_code', ]]
-
 
         return products_df
     
@@ -119,6 +112,25 @@ class DataCleaning:
         products_df=products_df[products_df['product_price'].str.contains('£\d+[.]*\d*')]
 
         return products_df
+    
+    def clean_orders_data(self,orders_df):
+
+        orders_df.drop(columns=['first_name', 'last_name','1','level_0'],inplace=True)
+        orders_df.set_index('index', inplace=True)
+            
+        return orders_df
+
+    def clean_sales_data(self,sales_df):
+
+        sales_df.dropna(inplace=True)
+        
+        sales_df=sales_df[~sales_df['year'].str.contains('[a-zA-Z]')]
+        sales_df=sales_df[~sales_df['month'].str.contains('[a-zA-Z]')]
+        sales_df=sales_df[~sales_df['day'].str.contains('[a-zA-Z]')]
+        sales_df=sales_df[~sales_df['time_period'].str.contains('\d')]
+   
+        return sales_df
+
 
          
 

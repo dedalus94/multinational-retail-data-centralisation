@@ -102,7 +102,27 @@ class DataExtractor():
         s3 = boto3.client('s3', region_name='eu-west-1')
         s3.download_file(bucket_name , path , desired_file_name)
 
-        return pd.read_csv(desired_file_name)
+        return pd.read_csv(desired_file_name,index_col=0)
+    
+    def extract_json(self,url):
+        
+        response = requests.get(url)
+
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+        
+            print('request successful')
+            data = response.json()
+            data = pd.DataFrame(data)
+
+        # If the request was not successful, print the status code and response text
+        else:
+            print(f"Request failed with status code: {response.status_code}")
+            print(f"Response Text: {response.text}")
+
+        return data
+
+
 
 
 

@@ -4,3 +4,4 @@ Pipfile.lock
 Untitled.ipynb
 local_cred.yaml
 *.csv
+*.json
