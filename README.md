@@ -18,6 +18,8 @@ I did not include the pipfile and pipfile.lock files to ensure that users can us
 
 - A local_cred.yaml file is also required: it contains the credentials to access a local database that was created using PgAdmin4. The user should create its own local db and file for the code to run without errors.
 
+- In order to access AWS resources, the user should install AWS CLI (command line interface) and configure it by using an access key and a secret access key pair that can be generated for an AWS user via IAM. 
+
 ## Usage instructions
 
 - Simply run main.py 
