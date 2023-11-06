@@ -4,7 +4,39 @@ from sqlalchemy import text
 import pandas as pd 
 import tabula
 
+
 class DatabaseConnector:
+
+    '''
+    A class used to establish a connection to AWS 
+
+    
+    Parameters:
+    ----------
+    None 
+
+    
+    Attributes:
+    ----------
+    None 
+
+
+    Methods:
+    -------
+
+    read_db_creds()
+        loads AWS RDS credentials from a yaml file
+
+    init_db_engine()
+        Initialises an engine to connect to a AWS RDS db 
+
+    list_db_tables()
+        Lists all tables in RDS that can be queried 
+
+    upload_to_db(credential_file, table_name,df)
+        uploads a pandas dataframe to a local postgres sql db, using init_db_engine
+
+    '''
 
     def __init__(self) -> None:
         pass
@@ -21,7 +53,7 @@ class DatabaseConnector:
     
     def init_db_engine(self):
 
-        """ This method creates and returns an SQL alchemy engine created using the credentials read from the other method"""
+        """ This method creates and returns an SQL alchemy engine created using the credentials read from the read_db_creds method"""
 
         DATABASE_TYPE = 'postgresql'
         DBAPI = 'psycopg2'
@@ -39,12 +71,25 @@ class DatabaseConnector:
     
     def list_db_tables(self):
 
+        """This method lists (prints in the terminal) all tables in the AWS RDS """
+
         insp = inspect(self.init_db_engine())
         print (insp.get_table_names())
 
     def upload_to_db(self, credential_file, table_name,df):
 
-        """This function connects to the locally initialised DB and uploads data in a table."""
+        """
+        This function connects to the locally initialised DB and uploads data in a table.
+        
+        Args:
+            -credential_file (yaml file): credentials to connect to postgres
+            -table_name (str): desired name for the dataframe to upload as a table
+            -df (pandas dataframe): dataframe to upload 
+
+        Returns:
+            None
+
+        """
 
         with open(credential_file,'r') as local_credentials:
 
@@ -65,14 +110,3 @@ class DatabaseConnector:
                     con=engine,
                     if_exists='replace',
                     )
-
-
-
-
-
-
-        
-
-
-
-
