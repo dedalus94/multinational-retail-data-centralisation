@@ -13,6 +13,8 @@ if __name__ == "__main__":
 
     # using methods - check dockstring to know what each method does in detail: 
 
+    """
+
     db.list_db_tables() # list all RDS tables 
 
     users_df = db_extractor.read_rds_table(db,'legacy_users') #extracts RDS users table
@@ -30,11 +32,16 @@ if __name__ == "__main__":
 
     db.upload_to_db('local_cred.yaml','dim_card_details',pdf_df)
 
+    """
+
     #gets stores data from API 
     number_of_stores = db_extractor.list_number_of_stores()
     store_df = db_extractor.retrieve_stores_data()
     store_df = db_cleaner.called_clean_store_data(store_df)
+    store_df.to_csv('store_df.csv')
     db.upload_to_db('local_cred.yaml','dim_store_details',store_df)
+
+    """
 
     #gets products data from a csv stored in S3, cleans and process the weight column, uploads to the postgres db:
     s3_file = db_extractor.extract_from_s3('s3://data-handling-public/products.csv','s3_products.csv')
@@ -56,3 +63,4 @@ if __name__ == "__main__":
     sales_df = db_cleaner.clean_sales_data(sales_df)
     db.upload_to_db('local_cred.yaml','dim_date_times',sales_df)
     
+    """

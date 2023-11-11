@@ -1,5 +1,6 @@
 import pandas as pd 
 import re
+import numpy as np 
 
 class DataCleaning:
 
@@ -154,8 +155,16 @@ class DataCleaning:
         store_df = store_df[~store_df['staff_numbers'].str.contains('[a-zA-Z]',regex=True)]
         store_df = store_df[~store_df['country_code'].str.contains('\d',regex=True)]
         store_df = store_df[~store_df['continent'].str.contains('\d',regex=True)]
-        store_df['continent'] = store_df['continent']=store_df.continent.str.replace('ee','')
+        store_df['continent'] = store_df.continent.str.replace('ee','')
         
+
+        store_df.lat.replace('0', np.NaN, inplace=True)
+        store_df.longitude.replace('0', np.NaN, inplace=True)
+        store_df.latitude.replace('0', np.NaN, inplace=True)
+        store_df.lat.replace('N/A', np.NaN, inplace=True)
+        store_df.longitude.replace('N/A', np.NaN, inplace=True)
+        store_df.latitude.replace('N/A', np.NaN, inplace=True)
+
         return store_df
 
     def convert_product_weights(self,products_df):
