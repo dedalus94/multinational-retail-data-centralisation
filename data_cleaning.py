@@ -70,17 +70,20 @@ class DataCleaning:
             
         slash_dates = df[df[date_col].str.contains("/", regex=False)]
         wordly_dates = df[df[date_col].str.contains('\d{4}\s[a-zA-Z]+\s\d{2}', regex=True)]
+        wordly_dates_reverse = df[df[date_col].str.contains('[a-zA-Z]+\s\d{4}\s\d{2}', regex=True)]
         regular_dates = df[df[date_col].str.contains("\d{4}-\d{2}-\d{2}", regex=True)]
 
         slash_dates[date_col] = pd.to_datetime(slash_dates[date_col])
         wordly_dates[date_col] = pd.to_datetime(wordly_dates[date_col])
-        regular_dates[date_col] = pd.to_datetime(regular_dates[date_col])
+        wordly_dates_reverse[date_col] = pd.to_datetime(wordly_dates_reverse[date_col])
+        regular_dates[date_col] = pd.to_datetime(regular_dates[date_col], format='%Y-%m-%d')
         
         print(f"formatted {slash_dates.shape[0]} row with datetime format type '1992/01/12', in column {date_col} ")
         print(f"formatted {wordly_dates.shape[0]} row with datetime format type '1989 October 10',in column {date_col} ")
+        print(f"formatted {wordly_dates_reverse.shape[0]} row with datetime format type 'October 1989 10',in column {date_col} ")
         print(f"formatted {regular_dates.shape[0]} row with datetime format type '2005-01-10', in column {date_col} ")
 
-        return pd.concat([slash_dates,wordly_dates,regular_dates])
+        return pd.concat([slash_dates,wordly_dates,wordly_dates_reverse,regular_dates])
     
     def clean_user_data(self,users_df):
 
@@ -111,7 +114,7 @@ class DataCleaning:
         users_df = users_df[~users_df['first_name'].str.contains('\d',regex=True)] #checks names have no numbers
         users_df = users_df[~users_df['last_name'].str.contains('\d',regex=True)] #checks surnames have no numbers
         users_df = users_df[~users_df['country'].str.contains('\d',regex=True)] #checks that country names have no number
-        users_df['country_code'] = users_df['country_code']=users_df.country_code.str.replace('GGB','GB') #make UK code consistent 
+        users_df['country_code']=users_df.country_code.str.replace('GGB','GB') #make UK code consistent 
 
         users_df = self.format_date(users_df,'date_of_birth')
         users_df = self.format_date(users_df,'join_date')
@@ -132,7 +135,14 @@ class DataCleaning:
     
         """
         
+        #the following lines can extract card numbers from entries with format "??4654488694" - with 1 or more question marks to remove 
         cards_df.dropna(inplace=True)
+        cards_question_mark = cards_df[cards_df['card_number'].str.contains('?', regex=False)]
+        mark_idx = cards_question_mark.index
+        extract = cards_question_mark['card_number'].str.extract('[?]+(\d+)')
+        cards_df.loc[mark_idx,'card_number'] = extract[0]
+
+        #lambda replaces elements containing 'NULL' with NaNs, then those can be dropped with .dropna()
         cards_df = cards_df.apply(lambda x : x[~x.astype('str').str.contains('NULL')]).dropna()
         cards_df = self.format_date(cards_df,'date_payment_confirmed')
         cards_df = cards_df[~cards_df['card_number'].str.contains('[a-zA-Z]',regex=True)]
@@ -152,18 +162,33 @@ class DataCleaning:
     
         """
 
-        store_df = store_df[~store_df['staff_numbers'].str.contains('[a-zA-Z]',regex=True)]
+        store_df = store_df.dropna(how='all',axis=0)
+        store_df = self.format_date(store_df,'opening_date')
         store_df = store_df[~store_df['country_code'].str.contains('\d',regex=True)]
         store_df = store_df[~store_df['continent'].str.contains('\d',regex=True)]
         store_df['continent'] = store_df.continent.str.replace('ee','')
-        
+        store_df = store_df.replace(value=None,to_replace='NULL|N/A', regex=True)
 
-        store_df.lat.replace('0', np.NaN, inplace=True)
-        store_df.longitude.replace('0', np.NaN, inplace=True)
-        store_df.latitude.replace('0', np.NaN, inplace=True)
-        store_df.lat.replace('N/A', np.NaN, inplace=True)
-        store_df.longitude.replace('N/A', np.NaN, inplace=True)
-        store_df.latitude.replace('N/A', np.NaN, inplace=True)
+        staff_numbers = store_df['staff_numbers'].dropna()
+        staff_numbers = staff_numbers[staff_numbers.str.contains('[A-Za-z]')]
+        extraction = staff_numbers.str.extract('[A-Za-z]*(\d*)[A-Za-z]*(\d*)[A-Za-z]*').sum(axis=1)
+        store_df.loc[extraction.index,'staff_numbers'] = extraction
+
+        store_df[['lat',
+                  'latitude',
+                  'longitude',
+                  'staff_numbers']] = (store_df[['lat',
+                                                 'latitude',
+                                                 'longitude',
+                                                 'staff_numbers']]
+                                                .fillna('0')
+                                                .astype('float'))
+
+        store_df = store_df[['address', 'longitude', 'locality', 'store_code',
+            'staff_numbers', 'opening_date', 'store_type', 'latitude',
+            'country_code', 'continent']]
+                
+
 
         return store_df
 
@@ -199,8 +224,9 @@ class DataCleaning:
 
             extraction = products_df['weight'].str.extract(unit,expand=False, flags=re.IGNORECASE).dropna()
             idx = extraction.index
-            products_df.loc[idx,'weight (kg)'] = extraction.astype('float')*unit_conversion_dict[unit]
+            products_df.loc[idx,'weight_kg'] = extraction.astype('float')*unit_conversion_dict[unit]
 
+        
         return products_df
     
     def clean_products_data(self,products_df):
@@ -221,6 +247,7 @@ class DataCleaning:
         products_df = products_df[~products_df['removed'].str.contains('\d')]
         products_df = products_df[products_df['EAN'].str.contains('\d')]
         products_df = products_df[products_df['product_price'].str.contains('£\d+[.]*\d*')]
+        #print(products_df.columns)
 
         return products_df
     

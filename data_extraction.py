@@ -3,6 +3,7 @@ from database_utils import *
 import requests 
 from tqdm import tqdm
 import boto3 
+import tabula
 
 
 class DataExtractor():
@@ -82,8 +83,8 @@ class DataExtractor():
             Pandas DataFrame 
         
         """
-
-        return (pd.concat(tabula.read_pdf(link, stream=True, pages="all",output_format='dataframe')))
+        #stream set to False to prevent data loss 
+        return (pd.concat(tabula.read_pdf(link, stream=False, pages="all",output_format='dataframe')))
     
 
     def list_number_of_stores(self):
