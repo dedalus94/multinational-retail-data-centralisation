@@ -34,7 +34,7 @@ Three classes are used to handle the ETL process. The classes are defined in the
 - data_extraction.py
   - contains methods to download data from different sources 
 - database_utils.py
-  - Contains all methods to connecto to RDS and the local DB 
+  - Contains all methods to connect to RDS and the local DB 
 - data_cleaning.py
   - Contains methods unique to each data source that clean each table as well as methods used multiple times (e.g. to format dates)
 
