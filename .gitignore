@@ -5,3 +5,5 @@ Untitled.ipynb
 local_cred.yaml
 *.csv
 *.json
+.ipynb_checkpoints/
+__pycache__/
