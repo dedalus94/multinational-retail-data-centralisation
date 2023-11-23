@@ -7,6 +7,7 @@ The cleaning of the data has been achieved using regular expressions and various
 
 The cleaned data was stored in a local SQL server Database. Datatypes were fixed using an SQL script, as well as minor formatting, column deletions and the create of a star-based schema is also done by the same script.
 
+Python concepts used in this project: Classes, methods, list comprehension, lambda functions with Pandas apply, regular expressions, and more.
 
 
 ## Installation instructions
@@ -29,7 +30,7 @@ I did not include the pipfile and pipfile.lock files since users may want to use
 ## File structure of the project
 
 Everything is in the same folder.
-Three classes are used to handle the ETL process. The classes are defined in these files and imported in the main.py script:
+Three classes are used to handle the ETL process. The classes are defined in the following files and imported in the main.py script:
 
 - data_extraction.py
   - contains methods to download data from different sources 
@@ -38,5 +39,6 @@ Three classes are used to handle the ETL process. The classes are defined in the
 - data_cleaning.py
   - Contains methods unique to each data source that clean each table as well as methods used multiple times (e.g. to format dates)
 
+Two SQL files are also in the folder: one handles data type, minor data manipulation as well as creating the star-based schema. The other is an example of SQL queries to get insights from the data
 
 
