@@ -7,7 +7,29 @@ The cleaning of the data has been achieved using regular expressions and various
 
 The cleaned data was stored in a local SQL server Database. Datatypes were fixed using an SQL script, as well as minor formatting, column deletions and the create of a star-based schema is also done by the same script.
 
+Python concepts used in this project:
 
+-  Classes
+-  methods
+-  list comprehension
+-  lambda functions with Pandas apply
+-  regular expressions
+-  Docstrings and in-line documentation
+-  error handling (e.g. response codes from requests)
+
+Python Libraries: 
+
+- boto3 to extract from AWS S3
+- SQL Alchemy to extract from AWS RDS and to upload into the local Postgres DB 
+- Tabula 
+- requests 
+
+SQL concepts used in this project:
+
+- ALTER TABLE ALTER COLUMN to change data types
+- creation of a new column using CASE WHEN on a column in the same table
+- Primary and Foreign keys
+- Joins, cross joins, case when to extract and format data
 
 ## Installation instructions
 
@@ -29,14 +51,15 @@ I did not include the pipfile and pipfile.lock files since users may want to use
 ## File structure of the project
 
 Everything is in the same folder.
-Three classes are used to handle the ETL process. The classes are defined in these files and imported in the main.py script:
+Three classes are used to handle the ETL process. The classes are defined in the following files and imported in the main.py script:
 
-- data_extraction.py
+- **data_extraction.py**
   - contains methods to download data from different sources 
-- database_utils.py
+- **database_utils.py**
   - Contains all methods to connect to RDS and the local DB 
-- data_cleaning.py
+- **data_cleaning.py**
   - Contains methods unique to each data source that clean each table as well as methods used multiple times (e.g. to format dates)
 
+Two SQL files are also in the folder: **fix_data_types.sql** handles data type, minor data manipulation as well as creating the star-based schema. The **milestone_4.sql** is an example of SQL queries to get insights from the data
 
 
