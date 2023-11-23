@@ -8,21 +8,24 @@ The cleaning of the data has been achieved using regular expressions and various
 The cleaned data was stored in a local SQL server Database. Datatypes were fixed using an SQL script, as well as minor formatting, column deletions and the create of a star-based schema is also done by the same script.
 
 Python concepts used in this project:
-- Classes
-- methods
-- list comprehension
-- lambda functions with Pandas apply
-- regular expressions
-- Docstrings and in-line documentation
-- error handling (e.g. response codes from requests)
+
+-  Classes
+-  methods
+-  list comprehension
+-  lambda functions with Pandas apply
+-  regular expressions
+-  Docstrings and in-line documentation
+-  error handling (e.g. response codes from requests)
 
 Python Libraries: 
+
 - boto3 to extract from AWS S3
 - SQL Alchemy to extract from AWS RDS and to upload into the local Postgres DB 
 - Tabula 
 - requests 
 
-SQL concepts used in this project: 
+SQL concepts used in this project:
+
 - ALTER TABLE ALTER COLUMN to change data types
 - creation of a new column using CASE WHEN on a column in the same table
 - Primary and Foreign keys
