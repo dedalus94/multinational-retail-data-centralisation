@@ -32,13 +32,13 @@ I did not include the pipfile and pipfile.lock files since users may want to use
 Everything is in the same folder.
 Three classes are used to handle the ETL process. The classes are defined in the following files and imported in the main.py script:
 
-- data_extraction.py
+- **data_extraction.py**
   - contains methods to download data from different sources 
-- database_utils.py
+- **database_utils.py**
   - Contains all methods to connect to RDS and the local DB 
-- data_cleaning.py
+- **data_cleaning.py**
   - Contains methods unique to each data source that clean each table as well as methods used multiple times (e.g. to format dates)
 
-Two SQL files are also in the folder: one handles data type, minor data manipulation as well as creating the star-based schema. The other is an example of SQL queries to get insights from the data
+Two SQL files are also in the folder: **fix_data_types.sql** handles data type, minor data manipulation as well as creating the star-based schema. The **milestone_4.sql** is an example of SQL queries to get insights from the data
 
 
