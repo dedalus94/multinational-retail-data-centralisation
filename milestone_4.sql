@@ -92,19 +92,23 @@ ORDER BY total_sales
 
 
 --TASK 9 
-SELECT subquery.year,
-       AVG(subquery.diff) as actual_time_taken           
- FROM 
+SELECT
+       subquery.year,
+       AVG(subquery.diff) as actual_time_taken    
 
+FROM 
+    -- concatenation of the datetime 'granularities' is essential to get the right result 
+    -- I did not join to any other table under the assumption that each row represents a sale, since there is a date UUID that is a foreign key of the orders table
     (   WITH date_time_table AS (SELECT 
                                         year,
                                         TO_TIMESTAMP(CONCAT(year, '/', month, '/', day, '/', timestamp), 'YYYY/MM/DD/HH24:MI:ss') as date_times
-                                    FROM
-                                        dim_date_times
-                                        )
+
+                                FROM dim_date_times)
+
         SELECT
             year,
             LEAD (date_times) OVER (ORDER BY date_times ASC ) - date_times as diff
+
         FROM date_time_table 	
 
     ) subquery
