@@ -31,6 +31,8 @@ SET product_price = REPLACE(product_price, '£', '');
 ALTER TABLE dim_products
 ADD COLUMN weight_class VARCHAR(255);
 
+-- creates human redable weight col:
+
 UPDATE dim_products
 SET weight_class =  CASE
         WHEN weight_kg < 2 THEN 'Light'

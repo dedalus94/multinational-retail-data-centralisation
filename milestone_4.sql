@@ -37,7 +37,6 @@ GROUP BY location;
 
 
 --TASK 5
-
 SELECT subquery1.store_type,
        subquery1.total_sales,
        ROUND(subquery1.total_sales * 100.0 /subquery2.tot, 2) AS "percentage_total(%)"
@@ -72,16 +71,14 @@ LIMIT 10;
 
 
 --TASK 7
-
 SELECT SUM(staff_numbers) as total_staff_numbers,
        country_code 
 FROM dim_store_details
 GROUP BY country_code
 ORDER BY total_staff_numbers DESC;
-s
+
 
 --TASK 8 
-
 SELECT SUM(orders.product_quantity*products.product_price::numeric) total_sales,
        store_type,
        country_code
@@ -93,20 +90,31 @@ WHERE country_code = 'DE'
 GROUP BY country_code,store_type
 ORDER BY total_sales 
 
---TASK 9 
 
+--TASK 9 
 SELECT subquery.year,
        AVG(subquery.diff) as actual_time_taken           
  FROM 
 
-    (
-        SELECT year,
-               (LEAD (timestamp::TIME, 1) OVER (ORDER BY year,month,day,timestamp ASC ) - timestamp::TIME) as diff
-        FROM dim_date_times 
+    (   WITH date_time_table AS (SELECT 
+                                        year,
+                                        TO_TIMESTAMP(CONCAT(year, '/', month, '/', day, '/', timestamp), 'YYYY/MM/DD/HH24:MI:ss') as date_times
+                                    FROM
+                                        dim_date_times
+                                        )
+        SELECT
+            year,
+            LEAD (date_times) OVER (ORDER BY date_times ASC ) - date_times as diff
+        FROM date_time_table 	
+
     ) subquery
 
 GROUP BY subquery.year
 ORDER BY actual_time_taken  DESC
+limit 5;
+
+
+
 
 
 
