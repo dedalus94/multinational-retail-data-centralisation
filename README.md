@@ -60,6 +60,6 @@ Three classes are used to handle the ETL process. The classes are defined in the
 - **data_cleaning.py**
   - Contains methods unique to each data source that clean each table as well as methods used multiple times (e.g. to format dates)
 
-Two SQL files are also in the folder: **fix_data_types.sql** handles data type, minor data manipulation as well as creating the star-based schema. The **milestone_4.sql** is an example of SQL queries to get insights from the data
+Two SQL files are also in the folder: **fix_data_types.sql** that handles data type, minor data manipulation as well as creating the star-based schema. The **milestone_4.sql** is an example of SQL queries to get insights from the data
 
 
