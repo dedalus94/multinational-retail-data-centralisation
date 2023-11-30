@@ -1,11 +1,11 @@
 # AI Core project - Multinational retail data centralisation 
 
-This project was part of the AI Core bootcamp in Cloud Engineering. 
+This project is part of the AI Core bootcamp in Cloud Engineering. 
 The goal of the project is to collect data from AWS (S3 and RDS) and create a Postgres SQL database with the data collected. 
 
 The cleaning of the data has been achieved using regular expressions and various pandas methods.
 
-The cleaned data was stored in a local SQL server Database. Datatypes were fixed using an SQL script, as well as minor formatting, column deletions and the create of a star-based schema is also done by the same script.
+The cleaned data has been stored in a local SQL server Database. Datatypes were fixed using an SQL script. Minor formatting, column deletions and the creation of a star-based schema has also been done by the same script.
 
 Python concepts used in this project:
 
