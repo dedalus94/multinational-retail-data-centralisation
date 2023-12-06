@@ -9,13 +9,12 @@ The cleaned data has been stored in a local SQL server Database. Datatypes were 
 
 Python concepts used in this project:
 
--  Classes
--  methods
--  list comprehension
--  lambda functions with Pandas apply
--  regular expressions
+-  Classes & methods
+-  List comprehension
+-  Lambda functions with Pandas apply
+-  Regular expressions
 -  Docstrings and in-line documentation
--  error handling (e.g. response codes from requests)
+-  Error handling (e.g. response codes from requests)
 
 Python Libraries: 
 
@@ -42,7 +41,7 @@ I did not include the pipfile and pipfile.lock files since users may want to use
 
 - A local_cred.yaml file is also required: it contains the credentials to access a local database that was created using PgAdmin4. The user should create its own local db and file for the code to run without errors.
 
-- In order to access AWS resources, the user should install AWS CLI (command line interface) and configure it by using an access key and a secret access key pair that can be generated for an AWS user via IAM. 
+- To access AWS resources, the user should install AWS CLI (command line interface) and configure it by using an access key and a secret access key pair that can be generated for an AWS user via IAM. 
 
 ## Usage instructions
 
