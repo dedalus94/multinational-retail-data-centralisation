@@ -29,7 +29,7 @@ SQL concepts used in this project:
 - ALTER TABLE ALTER COLUMN to change data types
 - creation of a new column using CASE WHEN on a column in the same table
 - Primary and Foreign keys
-- Joins, cross joins, case when to extract and format data
+- Joins, cross joins, CASE WHEN to extract and format data
 
 ## Installation instructions
 
