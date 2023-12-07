@@ -1,0 +1,9 @@
+db_creds.yaml
+Pipfile
+Pipfile.lock
+Untitled.ipynb
+local_cred.yaml
+*.csv
+*.json
+.ipynb_checkpoints/
+__pycache__/
