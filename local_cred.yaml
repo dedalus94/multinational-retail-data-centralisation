@@ -1,0 +1,5 @@
+HOST: localhost
+PASSWORD: 11dariods56
+USER: postgres
+DATABASE: sales_data
+PORT: 5454
